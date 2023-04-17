@@ -29,4 +29,22 @@
   - Channel.basicAck(用于肯定确认) 处理成功 进行丢弃
   - Channel.basicNack(用于否定确认) 未处理完成
   - Channel.basicReject(用于否定确认) 不处理消息 直接丢弃
-    
+## 2023年4月17日 
+### 持久化
+#### 队列持久化
+- 当信道已被为不可为持久化之后 不可再表面可以持久化 会报错
+-  channel error; protocol method: #method<channel.close>(reply-code=406, reply-text=PRECONDITION_FAILED - inequivalent arg 'durable' for queue 'MESSION' in vhost '/': received 'true' but current is 'false', class-id=50, method-id=10)
+- 处理办法删除当前信道
+#### 消息持久化
+MessageProperties.PERSISTENT_TEXT_PLAIN 使发出的消息持久化
+当消息并未完全存入磁盘的时候发生异常还是会有消息的丢失的可能
+  - 消息不公平分分发 充分利用 性能让可以多处理的消费者处理更多信息   
+    //使用不公平分发（预取值个数）
+    int basicQos = 1;
+    channel.basicQos(basicQos);
+## 发布确认
+    开启发布确认
+    channel.confirmSelect();
+-   单个发布确认 可确认发布错误的消息队列位置
+- 批量发布确认
+- 

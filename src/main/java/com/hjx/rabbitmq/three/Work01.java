@@ -26,6 +26,9 @@ public class Work01 {
             //手动应答
             channel.basicAck(message.getEnvelope().getDeliveryTag(),false);
         };
+        //使用不公平分发
+        int basicQos = 4;
+        channel.basicQos(basicQos);
         boolean autoAck = false;
         channel.basicConsume(ACK_QUEUE_NAME,autoAck,deliverCallback,(tag)->{
             System.out.println(tag+ "回调逻辑");
